@@ -26,7 +26,6 @@ public class ProductManager implements ProductService {
 
 	@Override
 	public DataResult<List<Product>> getAll() {
-		// TODO Auto-generated method stub
 		return  new SuccessDataResult<List<Product>>
 		(this.productDao.findAll(),"Ürünler Başarıyla Listelendi.");
 	}
@@ -36,5 +35,45 @@ public class ProductManager implements ProductService {
 		this.productDao.save(product);
 		return new SuccessResult("Ürün Eklendi");
 	}
+
+	@Override
+	public DataResult<Product> getByProductName(String productName) {
+		return new SuccessDataResult<Product>(this.productDao.getByProductName(productName),"Ürün İsimleri Listelendi");
+	}
+
+	@Override
+	public DataResult<Product> getByProductNameAndCategory(String productName, int categoryId) {
+		return new SuccessDataResult<Product>(this.productDao.getByProductNameAndCategory_CategoryId(productName,categoryId),"Ürün İsimleri Listelendi");
+	}
+
+	@Override
+	public DataResult<List<Product>> getByProductNameOrCategory(String productName, int categoryId) {
+		return  new SuccessDataResult<List<Product>>
+		(this.productDao.getByProductNameOrCategory(productName,categoryId),"Ürünler Başarıyla Listelendi.");
+	}
+
+	@Override
+	public DataResult<List<Product>> getByCategoryIn(List<Integer> products) {
+		return  new SuccessDataResult<List<Product>>
+		(this.productDao.getByCategoryIn(products),"Ürünler Başarıyla Listelendi.");
+	}
+
+	@Override
+	public DataResult<List<Product>> getByProductNameContains(String productName) {
+		return  new SuccessDataResult<List<Product>>
+		(this.productDao.getByProductNameContains(productName),"Ürünler Başarıyla Listelendi.");
+	}
+
+	@Override
+	public DataResult<List<Product>> getByProductNameStartsWith(String productName) {
+		return  new SuccessDataResult<List<Product>>
+		(this.productDao.getByProductNameStartsWith(productName),"Ürünler Başarıyla Listelendi.");
+	}
+
+//	@Override
+//	public DataResult<List<Product>> getByNameAndCategory(String productName, int categoryId) {
+//		return  new SuccessDataResult<List<Product>>
+//		(this.productDao.getByNameAndCategory(productName, categoryId),"Ürünler Başarıyla Listelendi.");
+//	}
 
 }
