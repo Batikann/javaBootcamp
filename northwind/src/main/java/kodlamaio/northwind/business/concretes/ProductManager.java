@@ -3,6 +3,9 @@ package kodlamaio.northwind.business.concretes;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.northwind.business.abstracts.ProductService;
@@ -12,6 +15,8 @@ import kodlamaio.northwind.core.utilities.results.SuccessDataResult;
 import kodlamaio.northwind.core.utilities.results.SuccessResult;
 import kodlamaio.northwind.dataAccess.abstracts.ProductDao;
 import kodlamaio.northwind.entities.concretes.Product;
+import kodlamaio.northwind.entities.dtos.ProductWithCategoryDto;
+import net.bytebuddy.asm.Advice.This;
 
 @Service
 public class ProductManager implements ProductService {
@@ -68,6 +73,25 @@ public class ProductManager implements ProductService {
 	public DataResult<List<Product>> getByProductNameStartsWith(String productName) {
 		return  new SuccessDataResult<List<Product>>
 		(this.productDao.getByProductNameStartsWith(productName),"Ürünler Başarıyla Listelendi.");
+	}
+
+	@Override
+	public DataResult<List<Product>> getAllSorted() {
+		Sort sort = Sort.by(Sort.Direction.DESC,"productName");
+		return new SuccessDataResult<List<Product>>
+		(this.productDao.findAll(sort),"Başarılı");
+	}
+
+	@Override
+	public DataResult<List<Product>> getAll(int pageNo, int pageSize) {
+		Pageable pageable=PageRequest.of(pageNo-1, pageSize);
+		return new SuccessDataResult<List<Product>>
+		(this.productDao.findAll(pageable).getContent());
+	}
+
+	@Override
+	public DataResult<List<ProductWithCategoryDto>> getProductWithCategoryDetails() {
+		return new SuccessDataResult<List<ProductWithCategoryDto>>(this.productDao.getProductWithCategoryDetails(), "Ürün Detayları Listelendi");
 	}
 
 //	@Override
